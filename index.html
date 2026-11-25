@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lumi — Smart Home Light Control for Garmin Watches</title>
+  <meta name="description" content="Control your Google Home lights, rooms, and custom scenes directly from your Garmin watch. 100% local bridge on your Android phone — no cloud servers, no Home Assistant needed." />
+  <style>
+    :root {
+      --obsidian: #111318;
+      --charcoal: #1B1F27;
+      --border: #282E3A;
+      --amber: #F5B749;
+      --amber-tint: #2B2416;
+      --amber-text: #FFF0C2;
+      --sage: #34C78A;
+      --slate: #8E96A4;
+      --white: #F5F6F8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--obsidian);
+      color: var(--white);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    .container {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 32px 20px 64px;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--amber);
+      text-decoration: none;
+    }
+    .badge {
+      background: var(--amber-tint);
+      color: var(--amber);
+      border: 1px solid rgba(245, 183, 73, 0.5);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 999px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .hero {
+      padding: 48px 0 36px;
+      text-align: left;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      line-height: 1.15;
+      font-weight: 800;
+      margin-top: 14px;
+      margin-bottom: 16px;
+    }
+    .hero h1 span {
+      color: var(--amber);
+    }
+    .hero p {
+      font-size: 1.125rem;
+      color: var(--slate);
+      max-width: 660px;
+      margin-bottom: 28px;
+    }
+    .cta-box {
+      background: var(--charcoal);
+      border: 1px solid var(--amber);
+      border-radius: 22px;
+      padding: 28px;
+      margin: 24px 0 40px;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
+    }
+    .cta-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .cta-header h2 {
+      font-size: 1.35rem;
+      color: var(--amber);
+    }
+    .spots-pill {
+      background: rgba(52, 199, 138, 0.14);
+      color: var(--sage);
+      border: 1px solid rgba(52, 199, 138, 0.4);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+    .cta-box p {
+      color: var(--slate);
+      font-size: 0.95rem;
+      margin-bottom: 20px;
+    }
+    .btn-primary {
+      display: inline-block;
+      background: var(--amber);
+      color: var(--obsidian);
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 14px 26px;
+      border-radius: 14px;
+      text-decoration: none;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+    .btn-primary:hover {
+      opacity: 0.92;
+      transform: translateY(-1px);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 18px;
+      margin: 36px 0;
+    }
+    .card {
+      background: var(--charcoal);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 22px;
+    }
+    .card h3 {
+      color: var(--white);
+      font-size: 1.05rem;
+      margin-bottom: 8px;
+    }
+    .card p {
+      color: var(--slate);
+      font-size: 0.9rem;
+    }
+    .pricing-card {
+      background: var(--amber-tint);
+      border: 1px solid rgba(245, 183, 73, 0.55);
+      border-radius: 20px;
+      padding: 24px;
+      margin-top: 24px;
+    }
+    .pricing-card h3 {
+      color: var(--amber);
+      margin-bottom: 8px;
+    }
+    .pricing-card ul {
+      margin-left: 20px;
+      color: var(--amber-text);
+      font-size: 0.95rem;
+    }
+    footer {
+      margin-top: 56px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+      font-size: 0.85rem;
+      color: var(--slate);
+    }
+    footer a {
+      color: var(--amber);
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a href="index.html" class="brand">● Lumi</a>
+      <span class="badge">Garmin Connect IQ × Google Home</span>
+    </header>
+
+    <section class="hero">
+      <span class="badge">Founder's Batch · Closed Beta</span>
+      <h1>Deine Smart-Home-Lampen direkt am <span>Garmin-Handgelenk</span>.</h1>
+      <p>
+        Schalte Szenen („Wohnzimmer gemütlich“), ganze Räume oder einzelne Lampen inkl. Dimmung (25 / 50 / 75 / 100 %) direkt von deiner Garmin-Uhr. 
+        Funktioniert mit jedem Google-Home-Licht (IKEA DIRIGERA, Philips Hue, Matter, Tapo, Nanoleaf, Govee) — ohne eigenen Server und ohne Home Assistant.
+      </p>
+    </section>
+
+    <section class="cta-box">
+      <div class="cta-header">
+        <h2>🚀 Founder's Batch: 100 Google-Home-Testplätze</h2>
+        <span class="spots-pill">● Plätze verfügbar (Early Access)</span>
+      </div>
+      <p>
+        Da die neuen offiziellen <strong>Google Home APIs for Android</strong> aktuell auf 100 registrierte Early-Access-Tester limitiert sind, vergeben wir die ersten 100 Plätze exklusiv an Garmin- &amp; Android-Nutzer:innen. Als Founder-Tester nutzt du <strong>Lumi Pro während der gesamten Beta-Phase 100 % kostenlos</strong>.
+      </p>
+      <a class="btn-primary" href="mailto:j.kuemmele@gmail.com?subject=Lumi%20Founder%27s%20Batch%20Beta-Anmeldung&body=Hallo%20Lumi-Team%2C%0A%0Aich%20m%C3%B6chte%20am%20100-User%20Founder%27s%20Batch%20teilnehmen!%0A%0A1.%20Meine%20Google-Play%20%2F%20Google-Home%20E-Mail-Adresse%3A%20%0A2.%20Meine%20Garmin-Uhr%20(z.B.%20vivoactive%205%2C%20fenix%208)%3A%20%0A3.%20Meine%20Smart-Home-Lampen%20(z.B.%20IKEA%2C%20Hue%2C%20Tapo)%3A%20%0A">
+        Jetzt für 1 von 100 Plätzen anmelden →
+      </a>
+    </section>
+
+    <div class="grid">
+      <div class="card">
+        <h3>⚡ Eigene Szenen am Handgelenk</h3>
+        <p>Erstelle Szenen wie „Wohnzimmer gemütlich“ (alle Stehlampen auf 60 %, Deckenlampe aus) bequem in der Android-App und starte sie mit einem Tipp auf der Garmin-Uhr.</p>
+      </div>
+      <div class="card">
+        <h3>🔒 100 % Lokal &amp; Privat</h3>
+        <p>Kein Lumi-Cloud-Account, kein Tracking, keine Abo-Fallen. Die Companion-App spricht lokal über Bluetooth (Garmin Connect IQ) mit deiner Uhr.</p>
+      </div>
+      <div class="card">
+        <h3>⌚ Moderne Garmin-Uhren</h3>
+        <p>Ultraschlanke Watch-App (~19 KB) für Garmin vívoactive 5/6, Venu 3, Forerunner &amp; fēnix 7/8.</p>
+      </div>
+    </div>
+
+    <div class="pricing-card">
+      <h3>Fair &amp; Transparent: Freemium + Einmalkauf (Kein Abo!)</h3>
+      <ul>
+        <li><strong>Lumi Free (0 €):</strong> Garmin Watch-App + Android-App mit bis zu 2 Lampen und 1 Szene dauerhaft kostenlos testen.</li>
+        <li><strong>Lumi Pro (Einmalkauf 4,99 €):</strong> Bis zu 18 Lampen, 10 Räume und 12 eigene Szenen dauerhaft freischalten (für die ersten 100 Beta-Tester im Founder's Batch komplett kostenlos freigeschaltet!).</li>
+      </ul>
+    </div>
+
+    <footer>
+      <div>© 2026 Lumi Smart Home Bridge · Berlin, Germany</div>
+      <div>
+        <a href="privacy.html">Datenschutzerklärung / Privacy Policy &amp; Impressum</a>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
